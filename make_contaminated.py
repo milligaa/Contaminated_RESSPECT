@@ -1,8 +1,8 @@
 #just a version of the comb_spec maker that produces SNR values for missing objects
 from astropy.io import ascii
 from astropy.table import Table
-from ..Contaminated_RESSPECT.extract_RESSPECT_data import get_RESSPECT_data
-from ..Contaminated_RESSPECT.utils import transient_fibremag, host_fibremag, ETC_specMaker, setup_data
+from .utils.extract_RESSPECT_data import get_RESSPECT_data
+from .utils.utils import setup_data, host_fibremag, transient_fibremag, ETC_specMaker
 
 def template_flow(input_path, output_path):
 
@@ -75,4 +75,5 @@ def template_flow(input_path, output_path):
 
     ascii.write(SNR_table, output_path+'/output_params.csv', format='csv', overwrite = True)
 
-template_flow('input_bank', 'output_bank')
+if __name__ == "__main__":
+    template_flow('input_bank', 'output_bank')
