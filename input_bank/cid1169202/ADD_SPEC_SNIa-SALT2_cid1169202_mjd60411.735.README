@@ -1,0 +1,146 @@
+DOCUMENTATION:
+  OVERVIEW:
+    TIME_START:   2023-11-14  22:05  # UT
+    SURVEY:       LSST
+    GENMODEL:     SALT2.WFIRST-H17
+    SNIA:         True
+    HOST_MACHINE: login26
+    USERNAME:     amandaw8
+    SNDATA_ROOT:  /pscratch/sd/d/desctd/cfs_mirror/SNANA/SNDATA_ROOT
+    SNANA_DIR:     /global/cfs/cdirs/lsst/groups/TD/SOFTWARE/SNANA
+    SNANA_VERSION: v11_05h-12-g402b51d8
+    CWD:   /global/cfs/cdirs/desc-sn/SNANA/SURVEYS/LSST/USERS/amandaw8/store_inputs
+    INPUT_FILE:
+    - SNIa-SALT2_cid1169202_mjd60411.735_new.input
+# 
+  INPUT_KEYS:
+# Output data
+    GENVERSION:              ADD_SPEC_SNIa-SALT2_cid1169202_mjd60411.735
+    NGENTOT_LC:              1  
+    FORMAT_MASK:             2  #  += 2,32,16 -> TEXT, FITS, randomCID
+    GENTYPE:                 10  # true type
+    SNTYPE:                  1  101  # spec Type, photID type
+    CIDRAN_MIN:              0  
+    CIDRAN_MAX:              2707331  
+# Source model
+    GENMODEL:                SALT2.WFIRST-H17 
+    UVLAM_EXTRAPFLUX:        500 
+    GENMODEL_EXTRAP_LATETIME: $PLASTICC_MODELS/SNIa_Extrap_LateTime_2expon.TEXT 
+# Cosmology inputs
+    OMEGA_MATTER:            0.3150  
+    OMEGA_LAMBDA:            0.6850  
+    w0_LAMBDA:               -1.0000  
+    wa_LAMBDA:               0  
+    MUSHIFT:                 0  
+# Instrumental inputs
+    GENFILTERS:          ugrizY 
+    KCOR_FILE:           /global/cfs/cdirs/lsst/groups/TD/SN/SNANA/SURVEYS/LSST/USERS/amandaw8/calib_LSST_spectrograph.fits 
+    SIMLIB_FILE:             /global/cfs/cdirs/lsst/groups/TD/SN/SNANA/SURVEYS/LSST/ROOT/simlibs/baseline_v2.0_10yrs_WFD.simlib 
+    SIMLIB_MSKOPT:           128 
+    SMEARFLAG_FLUX:      1  # 1->add Poisson noise
+    SMEARFLAG_ZEROPT:    3  # +=1->apply scatter, +=2->add to FLUXERRCAL
+    FLUXERRMODEL_FILE:       $SNANA_DC2_DIR/AS6/OUT6_FLUXERRMODEL/FLUXERRMODEL_SIM.DAT 
+    FLUXERRMODEL_REDCOV:     u:0.6,g:0.8,r:0.8,i:0.80,z:0.8,Y:0.80 
+# Spectrograph inputs
+    TAKE_SPECTRUM:          
+    - HOST TEXPOSE_ZPOLY(1200) 
+    - MJD(60411.735:60413.735) TEXPOSE_ZPOLY(1200) 
+    SPECTROGRAPH_OPTMASK:    32768 
+# HOSTLIB inputs
+    HOSTLIB_FILE:            $SNANA_LSST_ROOT/ELASTICC/HOSTLIB/HOSTLIBS/ONE_YR+EAZY/SNIa_GHOST.HOSTLIB+APPEND 
+    HOSTLIB_DZTOL:           0.02 0.01 0.007 
+    HOSTLIB_MSKOPT:          258 
+    HOSTLIB_GALID_UNIQUE:    1 
+    HOSTLIB_SNR_DETECT:      5 
+    HOSTLIB_SMEAR_SERSIC:    1.0 
+    HOSTLIB_MXINTFLUX_SNPOS: 0.92 
+    HOSTLIB_SNR_SCALE:      
+    - 0.316 
+    - 1.0 
+    HOSTLIB_SPECBASIS_FILE:  SIMGEN_EAZY_TEMPLATES.INPUT 
+# SEARCHEFF/detections
+    SEARCHEFF_PIPELINE_LOGIC_FILE:  $SNANA_LSST_ROOT/models/searcheff/SEARCHEFF_PIPELINE_LOGIC_LSST.DAT
+    NEWMJD_DIF:              0.0210  # day-sep if > 1 detections required
+    SEARCHEFF_PIPELINE_EFF_FILE:  NONE
+    SEARCHEFF_SPEC_FILE:     $SNANA_LSST_ROOT/models/searcheff/PLASTICC_ORIGINAL_LSST_SPECEFF.DAT
+    SEARCHEFF_zHOST_FILE:    /global/cfs/cdirs/lsst/groups/TD/SN/SNANA/SURVEYS/LSST/ROOT/models/searcheff/PLASTICC_ORIGINAL_zHOST_4MOST_WFD.DAT
+    APPLY_SEARCHEFF_OPT:     1  # += 1,2,4 => pipe,spec,zhost
+# Redshift inputs
+    GENRANGE_REDSHIFT:       0.0783  0.0783  
+    GENSIGMA_REDSHIFT:       1.0000e-03  
+    GENSIGMA_VPEC:           0  # true vpec scatter (km/sec)
+    VPEC_ERR:                0  # vpec error after correction (km/sec)
+# Epoch & sky coverage inputs
+    GENRANGE_MJD:            60275.0000  61380.0000  
+    GENRANGE_PEAKMJD:        60411.7350  60411.7350  
+    GENSIGMA_PEAKMJD:        1.0000  
+    GENRANGE_TREST:          -100.0000  300.0000  
+    SOLID_ANGLE:             5.6940  
+# Galactic extinction
+    OPT_MWEBV:               3 
+    OPT_MWCOLORLAW:          99 
+# Population and rate-model params
+    GENPEAK_SALT2x1:         -0.3682  
+    GENSIGMA_SALT2x1:        0  0  
+    GENRANGE_SALT2x1:        -3.0000  2.0000  
+    GENPEAK_SALT2c:          -0.0188  
+    GENSIGMA_SALT2c:         0  0  
+    GENRANGE_SALT2c:         -0.3000  0.5000  
+    GENPEAK_SALT2ALPHA:      0.1400  
+    GENSIGMA_SALT2ALPHA:     0  0  
+    GENRANGE_SALT2ALPHA:     1.0000e-03  0.4000  
+    GENPEAK_SALT2BETA:       3.1000  
+    GENSIGMA_SALT2BETA:      0  0  
+    GENRANGE_SALT2BETA:      0.5000  9.9000  
+    DNDZ:                   
+    - POWERLAW2 2.5E-5 1.5 0.0 1.0 
+    - POWERLAW2 9.7E-5 -0.5 1.0 3.0 
+# Misc inputs
+    GENSOURCE:               RANDOM
+    PATH_USER_INPUT:         /global/cfs/cdirs/desc-sn/SNANA/SURVEYS/LSST/USERS/amandaw8/survey_config
+    PATH_SNDATA_SIM:         /pscratch/sd/d/desctd/SNANA_LSST_SIM
+    RANSEED:                 3773459  
+    DEBUG_FLAG:              0  
+    CIDOFF:                  1169201 
+    CIDRAN_MAX:              2707331 
+    SIMGEN_DUMP:             47 CID LIBID SIM_SEARCHEFF_MASK GENTYPE NON1A_INDEX ZCMB ZHELIO ZCMB_SMEAR RA DEC MWEBV RV AV GALNMATCH GALID GALZPHOT GALZPHOTERR GALSNSEP GALSNDDLR GALRANDOM_RADIUS GALRANDOM_PHI MU LENSDMU VPEC MAGSMEAR_COH PEAKMJD MJD_DETECT_FIRST MJD_DETECT_LAST DTSEASON_PEAK PEAKMAG_u PEAKMAG_g PEAKMAG_r PEAKMAG_i PEAKMAG_z PEAKMAG_Y WIDTH_u WIDTH_g WIDTH_r WIDTH_i WIDTH_z WIDTH_Y PERIOD SNRMAX SNRMAX2 SNRMAX3 NOBS NOBS_SATURATE 
+# CUTWIN inputs
+    APPLY_CUTWIN_OPT:        1  
+    CUTWIN_NOBS_NOSATURATE:  10 9999 grizY 
+    CUTWIN_HOST_ZPHOT:       0 3 
+    CUTWIN_MWEBV:            0 3 
+    CUTWIN_PEAKMAG_ALL:      14 999 
+# 
+  INPUT_NOTES:
+  - Poisson noise is ON 
+  - Reported flux-uncertainty includes SKY+GALAXY+SOURCE
+  - SB-dependent flux scatter is OFF
+  -  POWERLAW RATE MODEL:  2.50e-05*(1+z)^1.50  (0.0 < z < 1.0) 
+  -  POWERLAW RATE MODEL:  9.70e-05*(1+z)^-0.50  (1.0 < z < 3.0) 
+  -     MODEL_RATE(z=0.08) = 2.799e-05/Mpc^3/yr    
+  - H0 =  70.00 km/s/Mpc 
+  - Omega_{M,L} =  0.315, 0.685     w0,wa = -1.00,0.000
+  - APPLY_SEARCHEFF_OPT=1 --> Require EFF(PIPELINE) 
+  - PIPELINE requires 0 detections among  (MJD dif > 0.0210 days) 
+# 
+  OUTPUT_SUMMARY:
+    RANDOM_SYNC: 
+    - List=1  FIRST=0.213826  LAST=0.608184   AVG(wrap) = 0.0 +_ 0.0 
+    - List=2  FIRST=0.864116  LAST=0.844916   AVG(wrap) = 0.0 +_ 0.0 
+    - List=3  FIRST=0.457930  LAST=0.952604   AVG(wrap) = 0.0 +_ 0.0 
+# 
+    CPU_MINUTES:       0.00  
+    NGENLC_TOT:        1    # (0/sec)
+    NGENLC_WRITE:      1    # (0/sec)
+    NGENSPEC_WRITE:    2  
+    EFF(SEARCH+CUTS):  1.0000 +-  1.0000
+    NGEN_PER_SEASON:   0       # NSN(GEN) in GENRANGE(z,MJD,dOmega)
+    NACC_PER_SEASON:   0 +_ 0  # NSN(ACCEPT) after trigger+cuts
+    NREJECT:  [0,0,0,  0,0]   # [NEP<1,GENRANGE,PEAKMAG,  SEARCHEFF,CUTWIN] 
+    HOST_NMATCH:   # accepted
+    - 0 : [    0,   0,   0 ]  # z-ranges:  0.08-0.08, 0.08-0.08, 0.08-0.08
+    - 2 : [    0,   0,   0 ] 
+    HOST_NMATCH_FRACTIONS:  # accepted 
+    - 0 : [  0.000, 0.000, 0.000 ]  # z-ranges:  0.08-0.08, 0.08-0.08, 0.08-0.08
+    - 2 : [  0.000, 0.000, 0.000 ] 
+DOCUMENTATION_END:
