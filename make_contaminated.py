@@ -1,8 +1,15 @@
 #just a version of the comb_spec maker that produces SNR values for missing objects
 from astropy.io import ascii
 from astropy.table import Table
-from .utils.extract_RESSPECT_data import get_RESSPECT_data
-from .utils.utils import setup_data, host_fibremag, transient_fibremag, ETC_specMaker
+import sys
+import os
+from datetime import date
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+from util.extract_RESSPECT_data import get_RESSPECT_data
+from util.utils import setup_data, host_fibremag, transient_fibremag, ETC_specMaker
 
 def template_flow(input_path, output_path):
 
@@ -11,7 +18,7 @@ def template_flow(input_path, output_path):
     get_RESSPECT_data(input_path)
 
     #uses the params.csv to get parameters like redshift, magnitude and SNe type for use in template generation
-    template_values = setup_data(Table.read(input_path+'/params.csv', format='csv', delimiter=','))
+    template_values = setup_data(Table.read(input_path+'params.csv', format='csv', delimiter=','))
     Smags = template_values[0]
     Gmags = template_values[1]
     galaxies = template_values[2]
@@ -48,7 +55,7 @@ def template_flow(input_path, output_path):
 
     for dummy in range(len(Gmags)): 
             
-            print(dummy, 'of', len(supernovae))
+            print(dummy + 1, 'of', len(supernovae))
             
             result_observed = ETC_specMaker(supernovae[dummy], galaxies[dummy],
             Gmags[dummy], Smags[dummy], SN_type_str[dummy], texp_visit[dummy],
@@ -69,11 +76,16 @@ def template_flow(input_path, output_path):
     SNR_table['SN_ID'] = snid
     SNR_table['combined_SNR'] = L1_SNR_corr1
     SNR_table['combined_mag'] = Comb_mag_corr1
-    SNR_table['smags'] = Smags
-    SNR_table['gmags'] = Gmags
-    SNR_table['texp'] = texp_visit
+    SNR_table['fibre_trans_mag'] = Smags
+    SNR_table['fibre_host_mag'] = Gmags
+    SNR_table['esposure'] = texp_visit
 
-    ascii.write(SNR_table, output_path+'/output_params.csv', format='csv', overwrite = True)
+    #saves some output parameters for the generated spectra in a csv file with
+    #the current date (ddmmYYYY) in the filename
+    today = date.today()
+
+    d1 = today.strftime("%d%m%Y")
+    ascii.write(SNR_table, output_path+'output_params'+d1+'.csv', format='csv', overwrite = True)
 
 if __name__ == "__main__":
-    template_flow('input_bank', 'output_bank')
+    template_flow('input_bank/', 'output_bank/')

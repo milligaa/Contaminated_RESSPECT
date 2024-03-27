@@ -111,7 +111,6 @@ def host_fibremag(sep, gal_ddlr, sersic_index, galmag, pix_size_arcsec, seeing):
             pixel_distance = (pixel_centre_x - ((pixel_no/2) + pixel_sep)) ** 2 + (pixel_centre_y - (pixel_no/2)) ** 2
             pixel_int = true_array_int[h][g]
             if pixel_distance <= pixel_fibre_size ** 2:
-                # print((np.e ** pixel_int) * pixel_length * pixel_length, 'this is the pixel flux for pixel', h, g)
                 fibre_int_pix = fibre_int_pix + ((np.e ** pixel_int) * pixel_length * pixel_length)
                 good_coords.append([h,g])
             else:
@@ -149,8 +148,6 @@ def transient_fibremag(seeing, sne_mag):
     #integrate again to fibre radius with normalisation constant dividing gaussian
     gaussian_norm = lambda x:2 * np.pi * x * np.e ** (-(x**2)/(2 * (sigma ** 2))) / normalisation[0]
     fraction = integrate.quad(gaussian_norm ,0 ,0.725)[0] #only want the first bit here
-
-    print(fraction)
 
     new_mag = sne_mag - 2.5*np.log(fraction)
     return new_mag
@@ -294,9 +291,9 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
     comb_table = Table()
     comb_table['wavelength'] = comb_spec['WAVE']
     comb_table['flux'] = comb_spec['FLUX']
-    comb_table['err'] = comb_spec['ERR_FLUX']
-    comb_table['flux_nos'] = comb_spec['FLUX_NOSS']
-    comb_table['err_nos'] = comb_spec['ERR_FLUX_NOSS']
+    comb_table['flux_err'] = comb_spec['ERR_FLUX']
+    comb_table['flux_noskysub'] = comb_spec['FLUX_NOSS']
+    comb_table['flux_err_noskysub'] = comb_spec['ERR_FLUX_NOSS']
 
     #setting up the system path for saving the file in the right place and then writing it there
     
@@ -310,13 +307,15 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
         comb_SNR_unbin.append(comb_spec['FLUX'][no]/comb_spec['ERR_FLUX_NOSS'][no]) 
 
 
-    #print(comb_spec['WAVE'])
+    #this bit of code calculates the TiDES SNR, but it's a bit useless because
+    #it can't differentiate between host and transients, so you get the TiDES
+    #SNR of both :(
     snr_bin = []
     noise_bin = []
     target_bin = []
     wl_bin = []
     bin_number = int((17315 - 3315)/ 60)
-    #print('this is bin number', bin_number)
+
     for ijk in range(bin_number):
         noise_sum = 0
         target_sum = 0
