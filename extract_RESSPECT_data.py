@@ -5,7 +5,7 @@ import glob
 from astropy.table import Table
 from astropy.io import ascii
 
-def get_data(path):
+def get_RESSPECT_data(path):
     SNe_events = glob.glob(str(path)+'/*')
 
     for i in range(len(SNe_events)):
@@ -78,5 +78,3 @@ def get_data(path):
 
 
     ascii.write(to_save, path+'/params.csv', format = 'csv', overwrite=True)
-
-get_data('/Users/andrew/Desktop/Python_Stuff/SN_and_Galaxy/RESSPECT/Spectra_120224')

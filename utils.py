@@ -8,7 +8,7 @@ from qmostetc import Spectrum, QMostObservatory, L1DXU
 
 
 
-def adj_setup(data):
+def setup_data(data):
 
     #extract all the data we need, this will now include the ddlr and snsep values required to calculate the effective fibre magnitude
 
@@ -58,7 +58,7 @@ def adj_setup(data):
 
     return Smags, Gmags, galaxies, supernovae, ddlr, snsep, texp_visit, snid
 
-def effective_fibre_mag(sep, gal_ddlr, sersic_index, galmag, pix_size_arcsec, seeing):
+def host_fibremag(sep, gal_ddlr, sersic_index, galmag, pix_size_arcsec, seeing):
 
     dlr = gal_ddlr * sep
     gmag = galmag
@@ -144,7 +144,7 @@ def effective_fibre_mag(sep, gal_ddlr, sersic_index, galmag, pix_size_arcsec, se
     return eff_mag
 
 
-def point_convolute(seeing, sne_mag):
+def transient_fibremag(seeing, sne_mag):
     #first turn the seeing value into a sigma for the gaussian
     FWHM = seeing
     sigma = FWHM / (2 * np.sqrt(2 * np.log(2)))
@@ -165,7 +165,7 @@ def point_convolute(seeing, sne_mag):
     return new_mag
 
 
-def Comb_Maker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, spec_save_path):
+def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, spec_save_path):
     #this program calculates the mag of data, then sets a template equal to that mag
     #then it interpolates the template flux over the data's wavelength values before contaminating the data with the template flux
     #plots can be made of the spectra at each stage in the pipeline and TiDES SNR of the raw output can be calculated
