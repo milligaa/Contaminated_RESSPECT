@@ -4,13 +4,13 @@ from astropy.table import Table
 from ..Contaminated_RESSPECT.extract_RESSPECT_data import get_RESSPECT_data
 from ..Contaminated_RESSPECT.utils import transient_fibremag, host_fibremag, ETC_specMaker, setup_data
 
-def template_flow(fibre_corr, input_path, output_path):
+def template_flow(input_path, output_path):
 
     #generates params.csv file from RESSPECT sepctra
 
     get_RESSPECT_data(input_path)
 
-    #uses the SELFIE file to get parameters like redshift, magnitude and SNe type for use in template generation
+    #uses the params.csv to get parameters like redshift, magnitude and SNe type for use in template generation
     template_values = setup_data(Table.read(input_path+'/params.csv', format='csv', delimiter=','))
     Smags = template_values[0]
     Gmags = template_values[1]
@@ -29,10 +29,10 @@ def template_flow(fibre_corr, input_path, output_path):
         gmag_eff_fibre.append(host_fibremag(snsep[h], ddlr[h], 0.5, Gmags[h], snsep[h]/100, seeing_val))
         smag_eff_fibre.append(transient_fibremag(seeing=seeing_val, sne_mag=Smags[h]))
 
-    if fibre_corr == True:
-        for o in range(len(gmag_eff_fibre)):
-            Gmags[o] = gmag_eff_fibre[o]
-            Smags[o] = smag_eff_fibre[o]
+    #set the host and transient magnitudes to be the calculated fibre magnitudes
+    for o in range(len(gmag_eff_fibre)):
+        Gmags[o] = gmag_eff_fibre[o]
+        Smags[o] = smag_eff_fibre[o]
 
 
     L1_SNR_corr1 = []
@@ -51,8 +51,8 @@ def template_flow(fibre_corr, input_path, output_path):
             print(dummy, 'of', len(supernovae))
             
             result_observed = ETC_specMaker(supernovae[dummy], galaxies[dummy],
-            Gmags[dummy], Smags[dummy], SN_type_str[dummy], texp_visit[dummy], seeing_val,
-            output_path)
+            Gmags[dummy], Smags[dummy], SN_type_str[dummy], texp_visit[dummy],
+            seeing_val, output_path)
     
             L1_SNR_corr1.append(result_observed[0])
             Comb_mag_corr1.append(result_observed[1].value)
@@ -65,14 +65,6 @@ def template_flow(fibre_corr, input_path, output_path):
         del(Gmags[bad_index[bad] - bad])
         del(texp_visit[bad_index[bad] - bad])
 
-
-
-    print(len(L1_SNR_corr1), len(Comb_mag_corr1), len(Smags), len(Gmags), 'looking here')
-
-    print(bad_index)
-    print(SNR_append_index)
-    print(len(SNR_append_index))
-
     SNR_table = Table()
     SNR_table['SN_ID'] = snid
     SNR_table['combined_SNR'] = L1_SNR_corr1
@@ -83,4 +75,4 @@ def template_flow(fibre_corr, input_path, output_path):
 
     ascii.write(SNR_table, output_path+'/output_params.csv', format='csv', overwrite = True)
 
-template_flow(True, 'input_bank', 'output_bank')
+template_flow('input_bank', 'output_bank')

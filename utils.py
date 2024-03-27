@@ -51,11 +51,6 @@ def setup_data(data):
         supernovae.append(trans_spectrum[0])
         galaxies.append(host_spectrum[0])
 
-
-
-    print(len(Smags), len(galaxies), len(Gmags), len(supernovae),
-          'pay attention poo boy')
-
     return Smags, Gmags, galaxies, supernovae, ddlr, snsep, texp_visit, snid
 
 def host_fibremag(sep, gal_ddlr, sersic_index, galmag, pix_size_arcsec, seeing):
@@ -107,7 +102,6 @@ def host_fibremag(sep, gal_ddlr, sersic_index, galmag, pix_size_arcsec, seeing):
 
     #now try and get the pixels that are in the fibre. pixel coords are to the bottom left corner, but centres are at integer coords
     #remember circle of fibre is N/2 pixels up and to right 
-    #also remember that the pixel intenisties are logged for display purposes and must have np.e raised to their power to get actual intensity values!!!!!
     good_coords = []
     fibre_int_pix = 0
     for h in range(pixel_no):
@@ -123,15 +117,12 @@ def host_fibremag(sep, gal_ddlr, sersic_index, galmag, pix_size_arcsec, seeing):
             else:
                 continue
 
-    #change the color off the intensities inside the fibre for gra hics purposes (note that int array seems to be in configuration y,x so that's odd)
-    #should give coords as [0],[1] so don't know why that isn't working
     for i in range(len(good_coords)):
         coords = good_coords[i]
         int_array[coords[1]][coords[0]] = min_int
 
 
     ratio_pix = fibre_int_pix / flux_gal_total
-    print(ratio_pix, 'looking here pooboy')
 
     if ratio_pix > 1:
         ratio_pix = 1
@@ -174,7 +165,6 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
     #defining parameters for use down the code
     G_mag = Gal_mag * u.ABmag
     S_mag = SNe_mag * u.ABmag
-    alpha = 1              #this lets you adjust the amount of galaxy contamination without changing the magnitude
 
 
     #importing the data to be used
@@ -244,7 +234,7 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
     contaminated_flux = []
 
     for i in range(len(lam)):
-        interp_gal[i] = interp_gal[i] * alpha
+        interp_gal[i] = interp_gal[i]
         contaminated_flux.append(new_flux[i].value + interp_gal[i])
 
 
@@ -260,14 +250,6 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
     new_mag = new_spec.get_mag(u.ABmag, 'LSST_LSST.r')
     #divide by arcseconds squared for flat spatial distro, already account for fibre size by adding 0.545 mag to SNe
     new_spec.flux = new_spec.flux / (1.665 * u.arcsec * u.arcsec)
-
-    print('---------------------------------')
-    print('SNe input mag = ', spec_mag)
-    print('gal input mag = ', spec_mag2)
-    print('SNe out mag = ', SNe_mag)
-    print('gal out mag = ', Gal_mag)
-    print('combined out mag = ', new_mag)
-    print('---------------------------------')
 
     
 
@@ -352,6 +334,5 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
         wl_bin.append(wl_sum / tot)
 
     comb_snr = np.sum(snr_bin) / bin_number
-    print('binned TiDES SNR from L1 output:' , comb_snr)
 
     return [comb_snr, new_mag, comb_spec['WAVE'], comb_spec['FLUX']]
