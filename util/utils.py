@@ -8,7 +8,7 @@ from qmostetc import Spectrum, QMostObservatory, L1DXU
 
 
 
-def setup_data(data):
+def setup_data(data, spectra_path):
 
     #extract all the data we need, this will now include the ddlr and snsep values required to calculate the effective fibre magnitude
 
@@ -37,7 +37,7 @@ def setup_data(data):
 
 
     for t in snid:
-        file_location = '/Users/andrew/Desktop/Python_Stuff/SN_and_Galaxy/RESSPECT/Spectra_120224/cid'+str(t)
+        file_location = spectra_path+'cid'+str(t)
         both_spectrum = glob.glob(str(file_location)+'/*.SPEC')
         host_spectrum = glob.glob(str(file_location)+'/*HOST.SPEC')
         trans_spectrum = []
@@ -261,24 +261,7 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
     dxu = L1DXU(qmost, res, texp*u.min)   #doesn't like exposures sperarated into blocks, not sure if matters
     comb_spec = dxu.joined_spectrum()
 
-        
-    #first import the transmission spectrum
-    T_data = '/Users/andrew/Desktop/Python_Stuff/SN_and_Galaxy/adjusted_flat_spec.txt'
-    T_data_table = Table.read(T_data, format = 'csv', delimiter = ' ')
-
-    lam_t = []
-    intens_t = []
-    for rty in range(len(T_data_table)):
-        lam_t.append(T_data_table[rty][0])
-        intens_t.append(T_data_table[rty][1])
-
-    #for now the T spectrum is generated using a combined spectrum so wavelength array matches without need for interpolation
-    #THIS MAY NOT ALWAYS BE TRUE, BE WARY TRAVELLER
-    corrected_flux = []
-    for q in range(len(lam_t)):
-        corrected_flux.append(comb_spec['FLUX'][q].value / intens_t[q])
-
-    comb_spec['FLUX'][:] = corrected_flux * u.erg / (u.cm ** 2 * u.s * u.angstrom)
+   
 
     #setting up strings for data wanted in the file names for writing the combined spec
     st = str(SN_type)

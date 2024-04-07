@@ -18,7 +18,7 @@ def template_flow(input_path, output_path):
     get_RESSPECT_data(input_path)
 
     #uses the params.csv to get parameters like redshift, magnitude and SNe type for use in template generation
-    template_values = setup_data(Table.read(input_path+'params.csv', format='csv', delimiter=','))
+    template_values = setup_data(Table.read(input_path+'params.csv', format='csv', delimiter=','), input_path)
     Smags = template_values[0]
     Gmags = template_values[1]
     galaxies = template_values[2]
