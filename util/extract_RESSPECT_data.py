@@ -35,9 +35,7 @@ def get_RESSPECT_data(path):
             else:
                 trans_spectrum.append(file)
         
-        snid_b = data_file[0].find('SALT2_cid') + 9
-        snid_e = data_file[0].find('_mjd')
-        snid.append(data_file[0][snid_b:snid_e])
+        snid.append(data_file[0].split('/')[1][3:])
 
         f = open(data_file[0], "r")
         data_text = f.readlines()
