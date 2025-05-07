@@ -318,3 +318,4 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
     comb_snr = np.sum(snr_bin) / bin_number
 
     return [comb_snr, new_mag, comb_spec['WAVE'], comb_spec['FLUX']]
+
