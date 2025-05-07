@@ -171,7 +171,7 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
     lam = []
     intens = []
     for i in range(len(f_lines)):
-        if not f_lines[i].startswith(("#",'WAVE')):
+        if not f_lines[i].startswith(("#","WAVE")):
             ls = f_lines[i].split()
             lam.append(float(ls[0]))
             intens.append(float(ls[1]))
@@ -197,7 +197,7 @@ def ETC_specMaker(SNe_data, Gal_data, Gal_mag, SNe_mag, SN_type, texp, seeing, s
     lam2 = []
     intens2 = []
     for i in range(len(f2_lines)):
-        if not f2_lines[i].startswith("#"):
+        if not f2_lines[i].startswith(("#","WAVE")):
             ls2 = f2_lines[i].split()
             lam2.append(float(ls2[0]))
             intens2.append(float(ls2[1]))
